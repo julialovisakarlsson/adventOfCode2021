@@ -6,15 +6,17 @@ import java.util.List;
 
 public class TreacherousWhales {
     List<Integer> positions;
-    List<Integer> distances;
+    List<Long> distances;
     String[] numbers;
-    int shortestDist;
-    int foundDist;
+    Long shortestDist;
+    Long foundDist;
 
     public TreacherousWhales() throws IOException {
-        shortestDist = 999999999;
+        shortestDist = 99999999999999L;
         readInput();
-        calculate();
+        calculatePt1();
+        shortestDist = 99999999999999L;
+        calculatePt2();
     }
 
     private void readInput() throws IOException {
@@ -28,20 +30,43 @@ public class TreacherousWhales {
         }
     }
 
-    public void calculate() {                   //kolla varje plats som finns mellan 0 och högsta pos, kolla avstånd för alla, spara summa, jämför och spara lägsta varje gång.
+    public void calculatePt1() {                   //kolla varje plats som finns mellan 0 och högsta pos, kolla avstånd för alla, spara summa, jämför och spara lägsta varje gång.
 
         int highest = (int) positions.stream().sorted().toArray()[positions.size()-1];
 
         for (int pos = 0; pos <= highest; pos++) {
             distances = new ArrayList<>();
             for (Integer i : positions) {
-                distances.add(Math.abs(i - pos));
+                distances.add((long) Math.abs(i - pos));
             }
-            foundDist = distances.stream().mapToInt(Integer::intValue).sum();
+            foundDist = distances.stream().mapToLong(Long::intValue).sum();
             if (foundDist < shortestDist) shortestDist = foundDist;
         }
 
-        System.out.println(shortestDist);
+        System.out.println("Del 1 - kortaste avstånd: " + shortestDist);
+    }
+
+    public void calculatePt2() {                   //kolla varje plats som finns mellan 0 och högsta pos, kolla avstånd för alla, spara summa, jämför och spara lägsta varje gång.
+
+        int highest = (int) positions.stream().sorted().toArray()[positions.size()-1];
+
+
+        for (int pos = 0; pos <= highest; pos++) {
+            distances = new ArrayList<>();
+            long extraFuel;
+            for (Integer i : positions) {
+                extraFuel = 0;
+                for (int a = 0; a < Math.abs(i - pos); a++) {
+                    extraFuel += a;
+                }
+
+                distances.add(Math.abs(i - pos) + extraFuel);
+            }
+            foundDist = distances.stream().mapToLong(Long::intValue).sum();
+            if (foundDist < shortestDist) shortestDist = foundDist;
+        }
+
+        System.out.println("Del 2 - kortaste avstånd: " + shortestDist);
     }
 
 
