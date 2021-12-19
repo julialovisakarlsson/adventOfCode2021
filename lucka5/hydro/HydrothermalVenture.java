@@ -49,7 +49,6 @@ public class HydrothermalVenture {
 
             addPointsBetween(startPoint, endPoint);
         }
-
     }
 
     private void addPointsBetween(SimplePoint start, SimplePoint end) {
